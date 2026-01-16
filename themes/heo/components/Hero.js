@@ -357,9 +357,9 @@ function TodayCard({ cRef, siteInfo }) {
       className={`${
         isCoverUp ? ' ' : 'pointer-events-none'
       } overflow-hidden absolute hidden xl:flex flex-1 flex-col h-full top-0 w-full`}>
-      <a
+      <div
         id='card-body'
-        href={link}
+        onClick={handleCardClick}
         target='_blank'
         rel='noopener noreferrer'
         className={`${
@@ -404,7 +404,7 @@ function TodayCard({ cRef, siteInfo }) {
             isCoverUp ? '' : ' pointer-events-none'
           } hover:scale-110 duration-1000 object-cover cursor-pointer today-card-cover absolute w-full h-full top-0`}
         />
-      </a>
+      </div>
     </div>
   )
 }
