@@ -58,7 +58,7 @@ const MyApp = ({ Component, pageProps }) => {
   useEffect(() => {
     if (typeof document === 'undefined') return
 
-    originalTitle = document.title || ''
+    const originalTitle = document.title || ''
     
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
