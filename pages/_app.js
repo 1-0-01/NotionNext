@@ -10,7 +10,7 @@ import useAdjustStyle from '@/hooks/useAdjustStyle'
 import { GlobalContextProvider } from '@/lib/global'
 import { getBaseLayoutByTheme } from '@/themes/theme'
 import { useRouter } from 'next/router'
-import { useCallback, useMemo } from 'react'
+import { useCallback, useMemo, useEffect, useRef } from 'react'
 import { getQueryParam } from '../lib/utils'
 
 // 各种扩展插件 这个要阻塞引入
@@ -50,6 +50,52 @@ const MyApp = ({ Component, pageProps }) => {
     },
     [theme]
   )
+
+  // 页面可见性标题提示逻辑
+  const normalTitleRef = useRef('')
+  const timeoutRef = useRef(null)
+
+  useEffect(() => {
+    if (typeof document === 'undefined') return
+
+    // 初始化原始标题（如果尚未初始化）
+    if (!normalTitleRef.current) normalTitleRef.current = document.title
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === 'hidden') {
+        // 保存当前标题（以防被其它逻辑修改过）
+        normalTitleRef.current = document.title
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current)
+          timeoutRef.current = null
+        }
+        document.title = '这么着急就走啦，也不再逛逛？'
+        timeoutRef.current = setTimeout(() => {
+          document.title = normalTitleRef.current
+          timeoutRef.current = null
+        }, 1000)
+      } else {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current)
+          timeoutRef.current = null
+        }
+        document.title = '你回来了！！！' + (normalTitleRef.current || '')
+        timeoutRef.current = setTimeout(() => {
+          document.title = normalTitleRef.current || ''
+          timeoutRef.current = null
+        }, 1000)
+      }
+    }
+
+    document.addEventListener('visibilitychange', handleVisibilityChange)
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange)
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+        timeoutRef.current = null
+      }
+    }
+  }, [])
 
   const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   const content = (
