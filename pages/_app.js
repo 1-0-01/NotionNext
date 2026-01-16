@@ -51,52 +51,6 @@ const MyApp = ({ Component, pageProps }) => {
     [theme]
   )
 
-  // 页面可见性标题提示逻辑
-  const normalTitleRef = useRef('')
-  const timeoutRef = useRef(null)
-  
-  useEffect(() => {
-    if (typeof document === 'undefined') return
-
-    const originalTitle = document.title || ''
-    
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === 'hidden') {
-        // 保存当前标题（以防被其它逻辑修改过）
-        normalTitleRef.current = originalTitle
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current)
-          timeoutRef.current = null
-        }
-        document.title = '这么着急就走啦，也不再逛逛？'
-        timeoutRef.current = setTimeout(() => {
-          document.title = normalTitleRef.current
-          timeoutRef.current = null
-        }, 1000)
-      } else {
-        normalTitleRef.current = originalTitle
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current)
-          timeoutRef.current = null
-        }
-        document.title = '你回来了！！！' + (normalTitleRef.current || '')
-        timeoutRef.current = setTimeout(() => {
-          document.title = normalTitleRef.current || ''
-          timeoutRef.current = null
-        }, 1000)
-      }
-    }
-
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-        timeoutRef.current = null
-      }
-    }
-  }, [])
-
   const enableClerk = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
   const content = (
     <GlobalContextProvider {...pageProps}>
