@@ -348,7 +348,10 @@ function TodayCard({ cRef, siteInfo }) {
    * @param {*} e
    */
   function handleCardClick(e) {
-    router.push(link)
+    // router.push(link)
+    if (!link) return
+    // open link in a new tab; use noopener,noreferrer for security
+    window.open(link, '_blank', 'noopener,noreferrer')
   }
 
   return (
@@ -360,8 +363,6 @@ function TodayCard({ cRef, siteInfo }) {
       <div
         id='card-body'
         onClick={handleCardClick}
-        target='_blank'
-        rel='noopener noreferrer'
         className={`${
           isCoverUp
             ? 'opacity-100 cursor-pointer'
