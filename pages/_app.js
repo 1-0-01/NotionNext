@@ -54,14 +54,16 @@ const MyApp = ({ Component, pageProps }) => {
   // 页面可见性标题提示逻辑
   const normalTitleRef = useRef('')
   const timeoutRef = useRef(null)
-  const orignalTitle = document.title
+  const originalTitleRef = useRef('')
   useEffect(() => {
     if (typeof document === 'undefined') return
 
+    originalTitleRef.current = document.title || ''
+    
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         // 保存当前标题（以防被其它逻辑修改过）
-        normalTitleRef.current = orignalTitle
+        normalTitleRef.current = originalTitleRef.current
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current)
           timeoutRef.current = null
@@ -72,7 +74,7 @@ const MyApp = ({ Component, pageProps }) => {
           timeoutRef.current = null
         }, 1000)
       } else {
-        normalTitleRef.current = orignalTitle
+        normalTitleRef.current = originalTitleRef.current
         if (timeoutRef.current) {
           clearTimeout(timeoutRef.current)
           timeoutRef.current = null
