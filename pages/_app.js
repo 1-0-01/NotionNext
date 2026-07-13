@@ -10,7 +10,8 @@ import useAdjustStyle from '@/hooks/useAdjustStyle'
 import { GlobalContextProvider } from '@/lib/global'
 import { getBaseLayoutByTheme } from '@/themes/theme'
 import { useRouter } from 'next/router'
-import { useCallback, useEffect, useMemo } from 'react'
+import { useCallback, useMemo, useEffect, useRef } from 'react'
+
 import { getQueryParam } from '../lib/utils'
 import ErrorHandler from '@/lib/utils/errorHandler'
 

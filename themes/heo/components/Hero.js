@@ -352,7 +352,10 @@ function TodayCard({ cRef, siteInfo }) {
    * @param {*} e
    */
   function handleCardClick(e) {
-    router.push(link)
+    // router.push(link)
+    if (!link) return
+    // open link in a new tab; use noopener,noreferrer for security
+    window.open(link, '_blank', 'noopener,noreferrer')
   }
 
   // 如果配置为不显示遮罩，则不渲染TodayCard
